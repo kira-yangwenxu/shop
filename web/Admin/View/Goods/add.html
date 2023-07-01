@@ -1,0 +1,218 @@
+<extend name="Index/index"/>
+
+<block name="main">
+	<!-- page content -->
+        <div class="right_col" role="main">
+          <div class="">
+            <div class="page-title">
+              <div class="title_left">
+                <h3>添加商品</h3>
+              </div>
+
+            <div class="clearfix"></div>
+
+            <div class="row">
+              <div class="col-md-12 col-sm-12 col-gxs-12">
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h2>添加商品信息<small>Add Goods Information</small></h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                      </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+
+                    <form class="form-horizontal form-label-left" novalidate method="post" enctype="multipart/form-data">
+
+                      <p>Only商品管理权限的管理员可以操作</p>
+                      <span class="section">Add</span>
+
+                      <div class="item form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">商品名 <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                          <input id="name" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="name" type="text">
+                        </div>
+                      </div>
+
+                      <div class="item form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">商品标题 <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                          <input class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="title" type="text">
+                        </div>
+                      </div>
+
+                      <div class="item form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">类型<span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                          <select class="form-control" name="tid" id="tid">
+                            <option value="">--请选择--</option>
+                            <foreach name='type' item="v_type">
+                            <php>
+                              $num = substr_count($v_type['path'],',');
+                              $dis = ($num>2)?'':'disabled';
+                              $str = str_repeat('　',$num-1);
+                            </php>
+                              <option <?=$dis?> value="{$v_type['id']}" pid="{$v_type['pid']}">
+                              <?=$str.$v_type['name']?>
+                              </option>
+                            </foreach>
+                          </select>
+                        </div>
+                      </div>
+
+                      <div class="item form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">品牌<span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                          <select class="form-control" name="bid" id="bid"></select>
+                        </div>
+                      </div>
+
+                      <script>
+                        // 二级联动
+                          $('#tid').change(function() { 
+                            //获取tid的value
+                            var pid = $(this).children('option:selected').attr('pid');
+                            $.ajax({
+                              url:"{:U('Goods/add')}",
+                              data:'pid='+pid,
+                              success:function (data) {
+                                $('#bid').empty();
+                                var count = data.length;
+                                var b="";
+                                for (var i = 0; i <count; i++) {
+                                // console.log(data[i].id);
+                                  b += "<option value='"+data[i].id+"'>"+data[i].brandname+"</option>";  
+                                }
+                                $("#bid").append(b);  
+                              },
+                              error:function  () {
+                                 console.log('wrong');
+                              }
+                            });
+                          });
+                      </script>
+
+                      <div class="item form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12"><span class="required"></span>
+                        </label>
+                        <div class="col-md-3 col-sm-3 col-xs-12">
+                            <button type="button" class="btn btn-success add_attr">添加属性</button>
+                        </div>
+                      </div>
+                      <div class="item form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12"><span class="required">*</span>
+                        </label>
+                          <div class="col-md-1 col-sm-1 col-xs-12">
+                            属性:<input class="form-control col-md-7 col-xs-12 attr1" data-validate-length-range="6" data-validate-words="2" name="attrname[]">
+                          </div>
+                          <div class="col-md-1 col-sm-1 col-xs-12">
+                            值:<input class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="val[]">
+                          </div>                          
+
+                      </div>
+ 
+                      <div class="item form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12"><span class="required">*</span>
+                        </label>
+                          <div class="col-md-1 col-sm-1 col-xs-12">
+                            属性:<input class="form-control col-md-7 col-xs-12 attr2" data-validate-length-range="6" data-validate-words="2" name="attrname[]">
+                          </div>
+                          <div class="col-md-1 col-sm-1 col-xs-12">
+                            值:<input class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="val[]">
+                          </div>
+
+                          <div class="col-md-1 col-sm-1 col-xs-12">
+                            <label><span class="required">*</span>
+                            价格:<input class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="price[]">
+                          </div>
+                          <div class="col-md-1 col-sm-1 col-xs-12">
+                            库存:<input class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="stock[]">
+                          </div>
+                      </div>
+ 
+
+                      <script>
+                        $('.add_attr').delegate(this,'click',function(){
+                          $('.attr1').attr('readonly', 'readonly');
+                          $('.attr2').attr('readonly', 'readonly');
+                          var attr1 = $('.attr1').val();
+                          var attr2 = $('.attr2').val();
+                          
+                          $('.p_attr').before('<div class="item form-group"><label class="control-label col-md-3 col-sm-3 col-xs-12"><span class="required">*</span></label><div class="col-md-1 col-sm-1 col-xs-12">属性:<input class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="attrname[]"  readonly value="'+ attr1 +'"></div><div class="col-md-1 col-sm-1 col-xs-12">值:<input class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="val[]" ></div></div><div class="item form-group"><label class="control-label col-md-3 col-sm-3 col-xs-12"><span class="required">*</span></label><div class="col-md-1 col-sm-1 col-xs-12">属性:<input class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="attrname[]" readonly value="'+ attr2 +'"></div><div class="col-md-1 col-sm-1 col-xs-12">值:<input class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="val[]"></div><div class="col-md-1 col-sm-1 col-xs-12">价格:<input class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="price[]"></div><div class="col-md-1 col-sm-1 col-xs-12">库存:<input class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="stock[]"></div></div>');
+                        })
+                      </script>
+
+                      <div class="p_attr"></div>
+                      
+                      <div class="item form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12"><span class="required">*</span>
+                        </label>
+                        <div class="col-md-3 col-sm-3 col-xs-12">
+                            <button type="button" class="btn btn-info add_pic">添加上传</button>
+                        </div>
+                      </div>
+
+                      <div class="item form-group ">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">图片 <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12 picture">
+                          <label class="control-label col-md-3 col-sm-3 col-xs-12 d_pic" for="p1">
+                            <span class="glyphicon glyphicon-picture" style="margin-right:140px"></span>
+                            <input style="display:none" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="pic[]" type="file" id="p1">
+                          </label>
+                          <span class="glyphicon glyphicon-share-alt del_pic" style="margin-top:9px"></span>
+                        </div>
+                      </div>
+                      
+                      <script>
+                      var flag = 2;
+                      $('.add_pic').delegate(this,'click',function(){
+                        $('.del_pic').before('<label class="control-label col-md-3 col-sm-3 col-xs-12 d_pic" for="p'+flag+'"><span class="glyphicon glyphicon-picture" style="margin-right:140px"></span><input style="display:none" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="pic[]" type="file" id="p'+flag+'"></label>');
+                        flag++;
+                      })
+                      </script>
+                      
+
+                      <div class="item form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">状态<span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                          <select class="form-control" name="status">
+                              <option value="1">新添加</option>
+                              <option value="2">在售中</option>
+                              <option value="3">已下架</option>
+                          </select>
+                        </div>
+                      </div>
+
+
+                      <div class="item form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">描述<span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                          <textarea class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="des"></textarea>
+                        </div>
+                      </div>
+
+                      <div class="ln_solid"></div>
+                      <div class="form-group">
+                        <div class="col-md-6 col-md-offset-3">
+                          <button type="submit" class="btn btn-primary"><a href="{:U('index')}" style="color:white">查看列表</a></button>
+                          <button id="send" type="submit" class="btn btn-success">提交</button>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- /page content -->
+</block>

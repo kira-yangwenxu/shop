@@ -1,0 +1,143 @@
+<extend name="Index/index"/>
+
+<block name="main">
+	<!-- page content -->
+        <div class="right_col" role="main">
+          <div class="">
+            <div class="page-title">
+              <div class="title_left">
+                <h3>编辑商品</h3>
+              </div>
+
+            <div class="clearfix"></div>
+
+            <div class="row">
+              <div class="col-md-12 col-sm-12 col-gxs-12">
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h2>编辑商品信息<small>Edit Goods Information</small></h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                      </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+
+                    <form class="form-horizontal form-label-left" novalidate method="post" enctype="multipart/form-data">
+
+                      <p>Only商品管理权限的管理员可以操作</p>
+                      <span class="section">Add</span>
+
+                      <div class="item form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">商品名 <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                          <input id="name" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="name" type="text" value="{$goods['name']}">
+                        </div>
+                      </div>
+
+                      <div class="item form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">商品标题 <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                          <input class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="title" type="text" value="{$goods['title']}">
+                        </div>
+                      </div>
+
+                      <foreach name="detail" item="v">
+                        <div class="item form-group">
+                          <label class="control-label col-md-3 col-sm-3 col-xs-12"><span class="required">*</span>
+                          </label>
+                            <div class="col-md-2 col-sm-2 col-xs-12">
+                              属性:<input class="form-control col-md-7 col-xs-12 attr2" data-validate-length-range="6" data-validate-words="2" name="attr[]" disabled value="{$v['attr']}">
+                            </div>
+
+                            <div class="col-md-1 col-sm-1 col-xs-12">
+                              <label><span class="required">*</span>
+                              价格:<input class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="price[]" value="{$v['price']}">
+                            </div>
+                            <div class="col-md-1 col-sm-1 col-xs-12">
+                              库存:<input class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="stock[]" value="{$v['stock']}">
+                            </div>
+                        </div>
+                      </foreach>
+
+                      <div class="item form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12"><span class="required">原图</span>
+                        </label>
+                        <div class="col-md-3 col-sm-3 col-xs-12">
+                          <foreach name="images" item="val">
+                            <if condition="$goods['id'] eq $val['gid']">
+                              <img src="__UPLOAD__/Goods/{$val['path']}" width="100">
+                            </if>
+                          </foreach>
+                        </div>
+                      </div>
+
+                      <div class="item form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12"><span class="required">*</span>
+                        </label>
+                        <div class="col-md-3 col-sm-3 col-xs-12">
+                            <button type="button" class="btn btn-info add_pic">添加上传</button>
+                        </div>
+                      </div>
+
+                      <div class="item form-group ">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">替换图片 <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12 picture">
+                          <label class="control-label col-md-3 col-sm-3 col-xs-12 d_pic" for="p1">
+                            <span class="glyphicon glyphicon-picture" style="margin-right:140px"></span>
+                            <input style="display:none" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="pic[]" type="file" id="p1">
+                          </label>
+                          <span class="glyphicon glyphicon-share-alt del_pic" style="margin-top:9px"></span>
+                        </div>
+                      </div>
+                      
+                      <script>
+                      var flag = 2;
+                      $('.add_pic').delegate(this,'click',function(){
+                        $('.del_pic').before('<label class="control-label col-md-3 col-sm-3 col-xs-12 d_pic" for="p'+flag+'"><span class="glyphicon glyphicon-picture" style="margin-right:140px"></span><input style="display:none" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="pic[]" type="file" id="p'+flag+'"></label>');
+                        flag++;
+                      })
+                      </script>
+                      
+
+                      <div class="item form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">状态<span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                          <select class="form-control" name="status">
+                              <option  value="1">新添加</option>
+                              <option {$goods['status'] == 2 ?'selected':''} value="2">在售中</option>
+                              <option {$goods['status'] == 3 ?'selected':''} value="3">已下架</option>
+                          </select>
+                        </div>
+                      </div>
+
+
+                      <div class="item form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">描述<span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                          <textarea class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="des" >{$goods['des']}</textarea>
+                        </div>
+                      </div>
+
+                      <div class="ln_solid"></div>
+                      <div class="form-group">
+                        <div class="col-md-6 col-md-offset-3">
+                          <button type="submit" class="btn btn-primary"><a href="{:U('index')}" style="color:white">查看列表</a></button>
+                          <button id="send" type="submit" class="btn btn-success">提交</button>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- /page content -->
+</block>

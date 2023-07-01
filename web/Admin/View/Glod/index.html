@@ -1,0 +1,51 @@
+<extend name="Index/index"/>
+
+<block name="main">
+        <!-- page content -->
+<div class="right_col" role="main">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>积分规则</h2>
+                <div class="clearfix"></div>
+            </div>
+            <form class="x_content" method="post" action="{:U('Glod/index')}">
+                <div id="alerts"></div>
+                  
+                    <table>
+                        <tr>
+                            <th width="300">用户id</th>
+                            <th>购物积分</th>
+                        </tr>
+                <foreach name="list" item="v" key="k">
+                        <tr>
+                            <td>{$v['uid']}</td>
+                            <td>{$v['glod']}</td>
+                        </tr>
+                </foreach>
+                    </table>
+                    <nav style="text-align: center">
+                                <ul class="pagination">
+                                    {$btn}
+                                </ul>
+                            </nav>
+
+                
+                  
+                <br />
+
+                <div class="ln_solid"></div>
+            </form>
+        </div>
+    </div>      
+</div>
+                 
+       <script>
+            $('.pagination a,.pagination span').unwrap('<div></div>').wrap('<li></li>');
+        </script>           
+                  
+
+                  
+
+</block>
+

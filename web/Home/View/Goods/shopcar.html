@@ -1,0 +1,121 @@
+<extend name="Index/index"/>
+<!-- 重写css -->
+<block name="css">
+	<link rel="shortcut icon" type="image/x-icon" href="__PUBLIC__/home/style/img/icon/favicon.ico">
+	<link rel="stylesheet" type="text/css" href="__PUBLIC__/home/style/css/base.css">
+	<link rel="stylesheet" type="text/css" href="__PUBLIC__/home/style/css/home.css">
+	<link rel="shortcut icon" type="image/x-icon" href="__PUBLIC__/home/icon/favicon.ico">
+	<link rel="stylesheet" type="text/css" href="__PUBLIC__/home/css/base.css">
+	<link rel="stylesheet" type="text/css" href="__PUBLIC__/home/css/home.css">
+	<link rel="stylesheet" type="text/css" href="__PUBLIC__/home/css/car/css/style.css">
+</block>
+<!-- 重写js -->
+<block name="js">
+	<script type="text/javascript" src="__PUBLIC__/home/style/js/jquery.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/home/style/js/index.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/home/style/js/modernizr-custom-v2.7.1.min.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/home/js/jquery.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/home/js/index.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/home/js/js-tab.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/home/js/MSClass.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/home/js/jcarousellite.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/home/js/top.js"></script>
+</block>
+<block name="find"></block>
+<block name="shopcar"></block>
+<block name="nav"></block>
+<!-- 重写主体 -->
+<block name="content">
+	<section id="pc-jie">
+		<div class="pc-shopping-cart center">
+			<div class="pc-shopping-tab">
+				<table>
+					<thead>
+						<tr class="tab-0">
+							<th class="tab-1"><input type="checkbox" name="s_all" class="s_all tr_checkmr" id="s_all_h"><label for=""> 全选</label></th>
+							<th class="tab-2">商品</th>
+							<th class="tab-3">商品信息</th>
+							<th class="tab-4">单价</th>
+							<th class="tab-5">数量</th>
+							<th class="tab-6">小计</th>
+							<th class="tab-7">操作</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td colspan="7" style="padding-left:10px; background:#eee">
+								<input type="checkbox" checked >
+								<label for="">云购物自营</label>
+								<a href="#" style="position:relative;padding-left:50px"><i class="icon-kefu"></i>联系客服</a>
+								<ul class="clearfix fr" style="padding-right:20px">
+									<li><i class="pc-shop-car-yun"></i>满109元减10</li>
+									<li><i class="pc-shop-car-yun"></i>领取3种优惠券, 最高省30元</li>
+								</ul>
+							</td>
+						</tr>
+						<tr>
+							<th><input type="checkbox"  style="margin-left:10px; float:left"></th>
+							<th class="tab-th-1">
+								<a href="#"><img src="__PUBLIC__/home/style/images/shangpinxiangqing/X1.png" width="100%" alt=""></a>
+								<a href="#" class="tab-title">赛亿（shinee)取暖器家用/取暖电器/电暖器/电暖气台式摇头暖风机HN2118PT </a>
+							</th>
+							<th>
+								<p>颜色：黑色</p>
+								<p>规格：落地款</p>
+							</th>
+							<th>
+								<p>399.99</p>
+								<p class="red">299.99</p>
+							</th>
+							<th class="tab-th-2">
+								<span>-</span>
+								<input type="text" value="1" maxlength="3" placeholder="" class="shul">
+								<span>+</span>
+							</th>
+							<th class="red">299.99</th>
+							<th><a href="#">删除</a></th>
+						</tr>
+						<tr>
+							<th><input type="checkbox"  style="margin-left:10px; float:left"></th>
+							<th class="tab-th-1">
+								<a href="#"><img src="__PUBLIC__/home/style/images/shangpinxiangqing/X-1.png" width="100%" alt=""></a>
+								<a href="#" class="tab-title">赛亿（shinee)取暖器家用/取暖电器/电暖器/电暖气台式摇头暖风机HN2118PT </a>
+							</th>
+							<th>
+								<p>颜色：黑色</p>
+								<p>规格：落地款</p>
+							</th>
+							<th>
+								<p>399.99</p>
+								<p class="red">299.99</p>
+							</th>
+							<th class="tab-th-2">
+								<span>-</span>
+								<input type="text" value="1" maxlength="3" placeholder="" class="shul">
+								<span>+</span>
+							</th>
+							<th class="red">299.99</th>
+							<th><a href="#">删除</a></th>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div style="height:10px"></div>
+		<div class="center">
+			<div class="clearfix pc-shop-go">
+				<div class="fl pc-shop-fl">
+					<input type="checkbox" placeholder="">
+					<label for="">全选</label>
+					<a href="#">删除</a>
+					<a href="#">清楚失效商品</a>
+				</div>
+				<div class="fr pc-shop-fr">
+					<p>共有 <em class="red pc-shop-shu">2</em> 款商品，总计（不含运费）</p>
+					<span>¥ 699.00</span>
+					<a href="my-add.html">去付款</a>
+				</div>
+			</div>
+		</div>
+	</section>
+</block>

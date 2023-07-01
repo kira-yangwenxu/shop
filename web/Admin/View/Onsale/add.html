@@ -1,0 +1,155 @@
+<extend name="Index/index"/>
+
+<block name="main">
+	<!-- page content -->
+        <div class="right_col" role="main">
+          <div class="">
+            <div class="page-title">
+              <div class="title_left">
+                <h3>添加促销商品</h3>
+              </div>
+
+            <div class="clearfix"></div>
+
+            <div class="row">
+              <div class="col-md-12 col-sm-12 col-gxs-12">
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h2>添加促销商品信息<small>Add Goods Information</small></h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                      </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+
+                    <form id="addform" class="form-horizontal form-label-left" novalidate method="post" enctype="multipart/form-data" action="{:U('Onsale/tradd')}">
+
+                      <p>Only商品管理权限的管理员可以操作</p>
+                      <span class="section">Add</span>
+
+                      
+
+                      <div class="item form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">类型<span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                          <select class="form-control" name="tid" id="tid">
+                            <option value="">--请选择--</option>
+                            <foreach name='type' item="v_type">
+                            <php>
+                              $num = substr_count($v_type['path'],',');
+                              $dis = ($num>2)?'':'disabled';
+                              $str = str_repeat('　',$num-1);
+                            </php>
+                            
+                              
+                            
+                              <option <?=$dis?> value="{$v_type['id']}">
+                              <?=$str.$v_type['name']?>
+                              </option>
+                            </foreach>
+                          </select>
+                        </div>
+                      </div>
+
+                      
+                      <div id="addme" class="item form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">商品<span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+
+                          <select class="form-control" name="gid" id="gid">
+                            <option value="">--请选择--</option>
+                          </select>
+                        </div>
+                      </div>
+
+                      <div id="addme" class="item form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">折扣<span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+
+                          <input type="text" name="reduce" id="reduce">
+                      <button type="submit">提交</button>
+                        </div>
+                      </div>
+
+                      <script>
+                        // 二级联动
+                          $('#tid').change(function() { 
+                            var addform = document.getElementById('addform');
+                            //获取tid的value
+                            var tid = $(this).val();
+
+                            $.ajax({
+                              url:"{:U('Onsale/add')}",
+                              data:'tid='+tid,
+                              success:function (data) {
+        
+                                console.log(data);
+                                $('#gid').empty();
+                                var count = data.length;
+                                var b="";
+                                for (var i = 0; i <count; i++) {
+                                // console.log(data[i].id);
+                                  b += "<option value="+data[i].id+">"+data[i].name+"</option>";  
+                                }
+                                $("#gid").append(b);  
+                              },
+                              error:function  () {
+                                 console.log('wrong');
+                              }
+                            });
+                          });
+
+                          
+                      </script>
+
+                      
+                      </div>
+ 
+
+                      <script>
+                        $('.add_attr').delegate(this,'click',function(){
+                          $('.attr1').attr('readonly', 'readonly');
+                          $('.attr2').attr('readonly', 'readonly');
+                          var attr1 = $('.attr1').val();
+                          var attr2 = $('.attr2').val();
+                          
+                          $('.p_attr').before('<div class="item form-group"><label class="control-label col-md-3 col-sm-3 col-xs-12"><span class="required">*</span></label><div class="col-md-1 col-sm-1 col-xs-12">属性:<input class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="attrname[]"  readonly value="'+ attr1 +'"></div><div class="col-md-1 col-sm-1 col-xs-12">值:<input class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="val[]" ></div></div><div class="item form-group"><label class="control-label col-md-3 col-sm-3 col-xs-12"><span class="required">*</span></label><div class="col-md-1 col-sm-1 col-xs-12">属性:<input class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="attrname[]" readonly value="'+ attr2 +'"></div><div class="col-md-1 col-sm-1 col-xs-12">值:<input class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="val[]"></div><div class="col-md-1 col-sm-1 col-xs-12">价格:<input class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="price[]"></div><div class="col-md-1 col-sm-1 col-xs-12">库存:<input class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="stock[]"></div></div>');
+                        })
+                      </script>
+
+                      <div class="p_attr"></div>
+                      
+                      
+
+                      
+                      
+                      <script>
+                      var flag = 2;
+                      $('.add_pic').delegate(this,'click',function(){
+                        $('.del_pic').before('<label class="control-label col-md-3 col-sm-3 col-xs-12 d_pic" for="p'+flag+'"><span class="glyphicon glyphicon-picture" style="margin-right:140px"></span><input style="display:none" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="pic[]" type="file" id="p'+flag+'"></label>');
+                        flag++;
+                      })
+                      </script>
+                      
+
+                      
+
+                      
+                  </div>
+                </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- /page content -->
+</block>

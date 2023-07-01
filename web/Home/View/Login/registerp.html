@@ -1,0 +1,348 @@
+<!doctype html>
+<html>
+ <head>
+	<meta charset="UTF-8">
+	<meta name="Generator" content="EditPlus®">
+	<meta name="Author" content="">
+	<meta name="Keywords" content="">
+	<meta name="Description" content="">
+	<meta http-equiv="X-UA-Compatible" content="IE=9; IE=8; IE=7; IE=EDGE"> 
+	<meta name="renderer" content="webkit">
+	<title>用户注册</title>
+    <link rel="shortcut icon" type="image/x-icon" href="__PUBLIC__/home/icon/favicon.ico">
+	<link rel="stylesheet" type="text/css" href="__PUBLIC__/home/css/base.css">
+	<link rel="stylesheet" type="text/css" href="__PUBLIC__/home/css/login.css">
+    <script type="text/javascript" src="__PUBLIC__/home/js/jquery.js"></script>
+ </head>
+ <body>
+
+<!--- header begin-->
+<header id="pc-header">
+    <div class="login-header" style="padding-bottom:0">
+        <div><h1><a href="index.html"><img src="__PUBLIC__/home/icon/logo.png"></a></h1></div>
+    </div>
+</header>
+<!-- header End -->
+
+
+
+<section id="login-content">
+    <div class="login-centre">
+        <div class="login-switch clearfix">
+            <p class="fr">我已经注册，现在就 <a href="login.html">登录</a></p>
+        </div>
+        <div class="login-back">
+            <div class="H-over">
+                <form method="post" action="{:U('Register/registerp')}">
+                    <div class="login-input">
+                        <label><i class="heart">*</i>手机号码：</label><span id="send" style="height:40px; line-height:35px;"><a id="sends" href="javascript:void(0);" >发送验证码</a></span>
+                        <input type="phone" class="list-input1" id="phone" name="phone" placeholder="请填写手机号码">
+                    </div>
+                    <div class="login-input">
+                        <label><i class="heart">*</i>手机验证码：</label>
+                        <input type="phone" class="list-input1" id="yzm" name="yzm" placeholder="请填写手机验证码">
+                    </div>
+                    <div class="login-input">
+                        <label><i class="heart">*</i>请设置密码：</label>
+                        <input type="password" class="list-input" id="password" name="pwd" placeholder="密码大于6位">
+                    </div>
+                    <div class="login-input">
+                        <label><i class="heart">*</i>请确认密码：</label>
+                        <input type="password" class="list-input" id="password1" name="pwd2" placeholder="确认密码">
+                    </div>
+                    <input id="code" type="hidden" name="code" value=""> 
+                    <div class="item-ifo">
+                        <input type="checkbox" onClick="agreeonProtocol();" id="readme" checked="checked" class="checkbox">
+                        <label for="protocol">我已阅读并同意<a id="protocol" class="blue" href="#">《悦商城用户协议》</a></label>
+                        <span class="clr"></span>
+                    </div>
+                    <div class="login-button">
+                        <button disabled id="regbtn" type="sumbit" style="width: 270px; height: 45px; line-height: 45px; text-align: center; background: #ea4949; border-radius: 2px; display: block; color: #ffffff; font-size: 16px;">立即注册</button>
+                    </div>
+
+                </form>
+                <div class="coagent" id="kbCoagent">
+                    <ul>
+                        <li class="extra-r">
+                            <div class="regist-link">
+                                <a href="{:U('Login/register')}" class="">
+                                    <b></b>账号注册
+                                </a>
+                                <a href="{:U('Login/registere')}" class="">
+                                    <b></b>邮箱注册
+                                </a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</section>
+
+<!--- footer begin-->
+<footer id="footer">
+    <div class="containers">
+        <div class="w" style="padding-top:30px">
+            <div id="footer-2013">
+                <div class="links">
+                    <a href="">关于我们</a>
+                    |
+                    <a href="">联系我们</a>
+                    |
+                    <a href="">人才招聘</a>
+                    |
+                    <a href="">商家入驻</a>
+                    |
+                    <a href="">广告服务</a>
+                    |
+                    <a href="">手机京东</a>
+                    |
+                    <a href="">友情链接</a>
+                    |
+                    <a href="">销售联盟</a>
+                    |
+                    <a href="">English site</a>
+                </div>
+                <div style="padding-left:10px">
+                    <p style="padding-top:10px; padding-bottom:10px; color:#999">网络文化经营许可证：浙网文[2013]0268-027号| 增值电信业务经营许可证：浙B2-20080224-1</p>
+                    <p style="padding-bottom:10px; color:#999">信息网络传播视听节目许可证：1109364号 | 互联网违法和不良信息举报电话:0571-81683755</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</footer>
+<!-- footer End -->
+</body>
+<script>
+    var reg = /^1[34578]\d{9}$/;
+    $('#send').delegate('a', 'click', function  () {
+        var name = $('#phone').val();
+        var obj = {};
+        obj['phone'] = name;
+        if (!(reg.test($('#phone').val()))) {
+            $('#err1').remove();
+            $('#succ1').remove();
+            $('#phone').after("<b style='color:red; line-height:40px;' id='err1'>请输入正确的手机号码</b>");
+            $('#regbtn').attr('disabled', true);
+            return false;
+        };
+        
+        $.ajax({
+            type: 'GET',
+            url: "{:U('Register/ajaxRequestp')}",
+            data: obj,
+            success: function  (msg) {
+                if (msg == 1) {
+                    console.log(msg);
+                    $('#err1').remove();
+                    $('#succ1').remove();
+                    $('#phone').after("<b style='color:red; line-height:40px;' id='err1'>该手机号码已注册</b>");
+                    $('#regbtn').attr('disabled', true);
+
+                } else {
+                    var name = $('#phone').val();
+                    var obj = {};
+                    obj['phone'] = name;
+                    $.ajax({
+                        type: 'GET',
+                        url: "{:U('Register/ajaxRequests')}",
+                        data: obj,
+                        success: function  (msg) {
+                            console.log(msg);
+
+                            if (msg == 2) {
+                                alert('请输入验证码');
+                            } else {
+                                alert('验证码发送成功');
+                                var count = 60;
+                                $('#code').val(msg.codes);
+                                var timer = setInterval(function() {
+                                    count--;
+                                    if ( count == 0) {
+                                        // 清除定时器
+                                        clearInterval(timer);
+                                        $('#send').html('<a id="sends" href="javascript:void(0);" >重新发送</a>');
+                                        msg = null;
+                                    } else {
+                                        $('#send').html(count+"后重新发送");
+                                    }
+                                }, 1000);
+                            }
+                        } 
+                    });
+                }
+                
+            }
+        });
+
+                    
+                    
+                    
+
+    });
+    
+    $('#readme').change(function  (argument) {
+        
+        if ($('#readme').is(":checked") == false) {
+            $('#regbtn').attr('disabled', true);
+            alert('请同意老子的霸王条款才能注册');
+            return false;
+        } else {
+            $('#regbtn').attr('disabled', false);
+        }
+    });
+    $('#phone').blur(function  (argument) {
+        if ($('#succ1').length > 0 && $('#succ2').length > 0) {
+            $('#regbtn').attr('disabled', false); 
+        };
+
+        var name = $('#phone').val();
+        // if (name.length < 3) {
+        //     $('#err1').remove();
+        //     $('#succ1').remove();
+        //     $('#phone').after("<b style='color:red; line-height:40px;' id='err1'>用户名必须大于3位</b>");
+        //     $('#regbtn').attr('disabled', true);
+        //     return false;
+        // };
+        if (!(reg.test($('#phone').val()))) {
+            $('#err1').remove();
+            $('#succ1').remove();
+            $('#phone').after("<b style='color:red; line-height:40px;' id='err1'>请输入正确的手机号码</b>");
+            $('#regbtn').attr('disabled', true);
+            return false;
+        };
+        if (name == '') {
+            $('#err1').remove();
+            $('#succ1').remove();
+            $('#phone').after("<b style='color:red; line-height:40px;' id='err1'>手机号码不能为空</b>");
+            $('#regbtn').attr('disabled', true);
+            return false;
+        };
+        var obj = {};
+        obj['phone'] = name;
+        $.ajax({
+            type: 'GET',
+            url: "{:U('Register/ajaxRequestp')}",
+            data: obj,
+            success: function  (msg) {
+                if (msg == 1) {
+                    $('#err1').remove();
+                    $('#succ1').remove();
+                    $('#phone').after("<b style='color:red; line-height:40px;' id='err1'>该手机号码已注册</b>");
+                    $('#regbtn').attr('disabled', true);
+
+                } else {
+                    $('#err1').remove();
+                    $('#succ1').remove();
+                    $('#phone').after("<b style='color:green; line-height:40px;' id='succ1'>可以使用该手机号码</b>");
+                    if ($('#succ1').length > 0 && $('#succ2').length > 0) {
+                        $('#regbtn').attr('disabled', false);
+                    };
+                }
+            }
+        });
+    })
+
+    $('#yzm').blur(function  (argument) {
+        $('#err1').remove();
+        $('#err2').remove();
+        $('#err3').remove();
+        $('#err4').remove();
+        if ($('#yzm').val() == '') {
+            $('#regbtn').attr('disabled', true);
+            $('#yzm').after("<b style='color:red; line-height:40px;' id='err4'>请输入验证码</b>");
+        } else {
+            $('#regbtn').attr('disabled', false);
+        }
+    });
+
+    $('#password').blur(function  (argument) {
+
+        $('#err4').remove();
+
+        if ($('#succ1').length > 0 && $('#succ2').length > 0 && $('#yzm').val() != '') {
+            $('#regbtn').attr('disabled', false);
+        };
+        if ($('#yzm').val() == '') {
+            $('#regbtn').attr('disabled', true); 
+            $('#yzm').after("<b style='color:red; line-height:40px;' id='err4'>请输入验证码</b>");
+        };
+        if ($('#password').val().length < 6) {
+            $('#err2').remove();
+            $('#err3').remove();
+            $('#succ2').remove();
+            $('#password').after("<b style='color:red; line-height:40px;' id='err2'>密码要6位以上</b>");
+            $('#regbtn').attr('disabled', true);
+            return false;
+        };
+        $('#err2').remove();
+        $('#err3').remove();
+        $('#succ2').remove();
+        if ($('#password').val() == '') {
+            $('#err2').remove();
+            $('#password').after("<b style='color:red; line-height:40px;' id='err2'>密码不能为空</b>");
+            $('#regbtn').attr('disabled', true);
+            return false;
+        }
+        if ($('#password1').val() !== '' && $('#password').val() !== $('#password1').val()) {
+            $('#err3').remove();
+            $('#password1').after("<b style='color:red; line-height:40px;' id='err3'>两次密码不一致</b>");
+            $('#regbtn').attr('disabled', true);
+            return false;
+        }
+
+        if ($('#password1').val() !== '' && $('#password').val() == $('#password1').val()) {
+
+            $('#password1').after("<b style='color:green; line-height:40px;' id='succ2'>两次密码正确</b>");
+            if ($('#succ1').length > 0 && $('#succ2').length > 0) {
+                $('#regbtn').attr('disabled', false);
+            };
+        };
+
+        
+        
+    });
+
+    $('#password1').blur(function  (argument) {
+        $('#err4').remove();
+
+        if ($('#succ1').length > 0 && $('#succ2').length > 0 && $('#yzm').val() != '') {
+            $('#regbtn').attr('disabled', false);
+        };
+        if ($('#yzm').val() == '') {
+            $('#regbtn').attr('disabled', true); 
+            $('#yzm').after("<b style='color:red; line-height:40px;' id='err4'>请输入验证码</b>");
+        };
+        if ($('#password').val().length < 6) {
+            $('#err2').remove();
+            $('#err3').remove();
+            $('#succ2').remove();
+            $('#password').after("<b style='color:red; line-height:40px;' id='err2'>密码要6位以上</b>");
+            $('#regbtn').attr('disabled', true);
+            return false;
+        };
+        $('#err3').remove();
+        $('#succ2').remove();
+        if ($('#password1').val() == '') {
+            $('#err3').remove();
+            $('#password1').after("<b style='color:red; line-height:40px;' id='err3'>重复密码不能为空</b>");
+            $('#regbtn').attr('disabled', true);
+            return false;
+        };
+        if ($('#password').val() !== $('#password1').val()) {
+            $('#err3').remove();
+            $('#password1').after("<b style='color:red; line-height:40px;' id='err3'>两次密码不一致</b>");
+            $('#regbtn').attr('disabled', true);
+            return false;
+        } 
+
+        $('#password1').after("<b style='color:green; line-height:40px;' id='succ2'>两次密码正确</b>");
+        if ($('#succ1').length > 0 && $('#succ2').length > 0 && $('#yzm').val() != '') {
+            $('#regbtn').attr('disabled', false);
+        };
+    });
+</script>
+</html>

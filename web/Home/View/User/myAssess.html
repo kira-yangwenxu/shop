@@ -1,0 +1,318 @@
+<!doctype html>
+<html>
+ <head>
+	<meta charset="UTF-8">
+	<meta name="Generator" content="EditPlus®">
+	<meta name="Author" content="">
+	<meta name="Keywords" content="">
+	<meta name="Description" content="">
+	<meta http-equiv="X-UA-Compatible" content="IE=9; IE=8; IE=7; IE=EDGE"> 
+	<meta name="renderer" content="webkit">
+    <meta content="歪秀购物, 购物, 大家电, 手机" name="keywords">
+    <meta content="歪秀购物，购物商城。" name="description">
+	<title>会员系统我的评价</title>
+    <link rel="shortcut icon" type="image/x-icon" href="__PUBLIC__/home/icon/favicon.ico">
+	<link rel="stylesheet" type="text/css" href="__PUBLIC__/home/css/base.css">
+	<link rel="stylesheet" type="text/css" href="__PUBLIC__/home/css/member.css">
+    <script type="text/javascript" src="__PUBLIC__/home/js/jquery.js"></script>
+ </head>
+ <body>
+
+<!--- header begin-->
+<header id="pc-header">
+    <div class="BHeader">
+        <div class="yNavIndex">
+            <ul class="BHeaderl">
+                <li><a href="{:U('Index/index')}">首页</a> </li>
+                <li class="headerul">|</li>
+                <?php    if(!$_SESSION['homeInfo']):?>
+                  <li><a href="{:U('Login/index')}" style="color:#ea4949;">请登录</a> </li>
+                  <li class="headerul">|</li>
+                  <li><a href="{:U('Login/register')}">免费注册</a> </li>
+                <?php    endif;?>
+                <?php    if($_SESSION['homeInfo']):?>
+                  <li><a href="{:U('User/myOrder')}">你好，<?= $_SESSION['homeInfo']['username']?></a></li>
+                  <li class="headerul">|</li>
+                  <li style=""><a href="{:U('Login/logout')}" style="float:left;">退出</a> </li>
+                  <li class="headerul">|</li>
+                <?php    endif;?>
+                <li><a href="{:U('User/myOrder')}">订单查询</a> </li>
+                <li class="headerul">|</li>
+                <li><a href="{:U('User/myCollection')}">我的收藏</a> </li>
+                <li class="headerul">|</li>
+                
+            </ul>
+        </div>
+    </div>
+    <div class="container clearfix">
+        <div class="header-logo fl"><h1><a href="#"><img src="__PUBLIC__/home/icon/logo.png"></a> </h1></div>
+        <div class="member-title fl"><h2></h2></div>
+        <div class="head-form fl">
+            
+            <div class="words-text clearfix">
+               
+            </div>
+        </div>
+        
+    </div>
+</header>
+<!-- header End -->
+
+ 
+
+<!-- 商城快讯 begin -->
+<section id="member">
+    <div class="member-center clearfix">
+        <div class="member-left fl">
+            <div class="member-apart clearfix">
+                <div class="fl"><a href="{:U('User/pic')}"><img src="__PUBLIC__/home/img/user/<?=$_SESSION['homeInfo']['pic']?>"></a></div>
+                <div class="fl">
+                    <p>用户名：<a href="#"><?=$_SESSION['homeInfo']['username']?></a></p>
+                    <p></p>
+                    <p>积分：<?=$_SESSION['homeInfo']['glod']?></p>
+                    <p></p>
+                    <p>等级：<?=$_SESSION['homeInfo']['level']?></p>
+                    <?php    if($_SESSION['homeInfo']['sign'] == 1):?>
+                        <p id="sign" style="text-align:center"><a id="signup" style="width:100px;" href="#">签到</a></p>
+                    <?php   endif;?>
+                    
+                    <input type="hidden" id="glod" name="glod" value="<?=$_SESSION['homeInfo']['glod']?>">
+                    <input type="hidden" id="line" name="line" value="<?=$_SESSION['homeInfo']['line']?>">
+                    <input type="hidden" id="id" value="<?= $_SESSION['homeInfo']['id']?>">
+                </div>
+            </div>
+            <div>
+                经验值：
+                <div style="border:1px solid black;">
+                    <div>
+                        
+                        <p id="exp" style="background-color: lightgreen; width:0" ><b id="gai"><?=$_SESSION['homeInfo']['glod']?></b>/<?=$_SESSION['homeInfo']['line']?></p>
+                        
+                    </div>
+                </div>
+            </div>
+            <script>
+                $('body').delegate("#signup", "click",function  (argument) {
+                    var id = $('#id').val();
+                    var obj = {};
+                    obj['id'] = id;
+                    $.ajax({
+                        url:"{:U('User/sign')}",
+                        type:"GET",
+                        data:obj,
+                        success:function  (msg) {
+                            if (msg == 1) {
+                                $('#sign').remove();
+                                $('#gai').html(<?=$_SESSION['homeInfo']['glod']+5?>);
+                                alert('签到成功');
+                            };
+                            
+                        }
+                    });
+                })
+            </script>
+            <script>
+                var glod = $('#glod').val();
+                var line = $('#line').val();
+                var result = parseInt((glod/line)*100);
+                var res = result+'%';
+                $('#exp').css('width', res);
+            </script>
+            <div class="member-lists">
+                <dl>
+                    <dt>我的商城</dt>
+                    <dd><a href="{:U('User/myOrder')}">我的订单</a></dd>
+                    <dd><a href="{:U('User/myCollection')}">我的收藏</a></dd>
+                    <dd><a href="{:U('User/myUser')}">账户安全</a></dd>
+                    <dd class="cur"><a href="{:U('User/myAssess')}">我的评价</a></dd>
+                    <dd><a href="{:U('User/myAddress')}">地址管理</a></dd>
+                </dl>
+                <dl>
+                    <dt>客户服务</dt>
+                    <dd><a href="{:U('User/feedBack')}">我的反馈</a></dd>
+                    
+                </dl>
+                
+            </div>
+        </div>
+        <div class="member-right fr">
+            <div class="member-head">
+                <div class="member-heels fl"><h2>我的评价</h2></div>
+            </div>
+            <div class="member-border">
+               <div class="member-column clearfix">
+                   <span class="co1">商品信息</span>
+                   <span class="co2">购买时间</span>
+                   <span class="co3">操作</span>
+               </div>
+               <foreach name="list" item="v" key="k">
+               <div>
+                   <div class="member-class clearfix">
+                       <ul>
+                           <li class="clearfix">
+                               <div class="sp1">
+                                   <span class="gr1"><a href="{:U('Goods/goodsDetail', array('id'=>$v['info']['id']))}"><img width="60" height="60" about="" title="" src="__ROOT__/web/Admin/Upload/Goods/{$v['path']['path']}"></a></span>
+                                   <span class="gr2"><a href="{:U('Goods/goodsDetail', array('id'=>$v['info']['id']))}">{$v['info']['name']}</a></span>
+                                </div>
+                               <div class="sp2">{$v['comment']['ctime']}</div>
+                               <div id="{$v['cid']}" class="sp3"><a id="del" href="#">删除</a> </div>
+                           </li>
+                       </ul>
+                   </div>
+                   <div class="member-setup clearfix">
+                       <ul>
+                           
+
+                           <li class="clearfix">
+                               <div class="member-score fl">您的评价：</div>
+                               <div class="member-star fl">
+                                   {$v['comment']['ctext']}
+                               </div>
+                           </li>
+                           
+                           
+                       </ul>
+                   </div>
+               </div>
+               </foreach>
+                <div class="member-pages clearfix">
+                    <div class="fr pc-search-g">
+                        
+                    </span>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+<!-- 商城快讯 End -->
+
+<!--- footer begin-->
+<div class="aui-footer-bot">
+    <div class="time-lists aui-footer-pd clearfix">
+        <div class="aui-footer-list clearfix">
+            <h4>
+                <span><img src="__PUBLIC__/home/icon/icon-d1.png"></span>
+                <em>消费者权益</em>
+            </h4>
+            <ul>
+                <li><a href="#">保障范围 </a> </li>
+                <li><a href="#">退货退款流程</a> </li>
+                <li><a href="#">服务中心 </a> </li>
+                <li><a href="#">服务中心</a> </li>
+                <li><a href="#"> 更多特色服务 </a> </li>
+            </ul>
+        </div>
+        <div class="aui-footer-list clearfix">
+            <h4>
+                <span><img src="__PUBLIC__/home/icon/icon-d2.png"></span>
+                <em>新手上路</em>
+            </h4>
+            <ul>
+                <li><a href="#">退货退款流程</a> </li>
+                <li><a href="#">服务中心 </a> </li>
+                <li><a href="#">服务中心</a> </li>
+                <li><a href="#"> 更多特色服务 </a> </li>
+            </ul>
+        </div>
+        <div class="aui-footer-list clearfix">
+            <h4>
+                <span><img src="__PUBLIC__/home/icon/icon-d3.png"></span>
+                <em>保障正品</em>
+            </h4>
+            <ul>
+                <li><a href="#">退货退款流程</a> </li>
+                <li><a href="#">服务中心 </a> </li>
+                <li><a href="#">服务中心</a> </li>
+                <li><a href="#"> 更多特色服务 </a> </li>
+            </ul>
+        </div>
+        <div class="aui-footer-list clearfix">
+            <h4>
+                <span><img src="__PUBLIC__/home/icon/icon-d1.png"></span>
+                <em>消费者权益</em>
+            </h4>
+            <ul>
+                <li><a href="#">退货退款流程</a> </li>
+                <li><a href="#">服务中心 </a> </li>
+                <li><a href="#">服务中心</a> </li>
+                <li><a href="#"> 更多特色服务 </a> </li>
+            </ul>
+        </div>
+    </div>
+    <div style="border-bottom:1px solid #dedede"></div>
+    <div class="time-lists aui-footer-pd time-lists-ls clearfix">
+        <div class="aui-footer-list clearfix">
+            <h4>购物指南</h4>
+            <ul>
+                <li><a href="#">保障范围 </a> </li>
+                <li><a href="#">购物流程</a> </li>
+                <li><a href="#">会员介绍 </a> </li>
+                <li><a href="#">生活旅行</a> </li>
+                <li><a href="#"> 常见问题 </a> </li>
+                <li><a href="#"> 联系客服购物指南 </a> </li>
+            </ul>
+        </div>
+        <div class="aui-footer-list clearfix">
+            <h4>特色服务</h4>
+            <ul>
+                <li><a href="#">退货退款流程</a> </li>
+                <li><a href="#">服务中心 </a> </li>
+                <li><a href="#">服务中心</a> </li>
+                <li><a href="#"> 更多特色服务 </a> </li>
+                <li><a href="#"> 更多特色服务 </a> </li>
+                <li><a href="#"> 更多特色服务 </a> </li>
+                <li><a href="#"> 更多特色服务 </a> </li>
+            </ul>
+        </div>
+        <div class="aui-footer-list clearfix">
+            <h4>帮助中心</h4>
+            <ul>
+                <li><a href="#">退货退款流程</a> </li>
+                <li><a href="#">退货退款流程</a> </li>
+                <li><a href="#">退货退款流程</a> </li>
+                <li><a href="#">退货退款流程</a> </li>
+                <li><a href="#">服务中心 </a> </li>
+                <li><a href="#">服务中心</a> </li>
+                <li><a href="#"> 更多特色服务 </a> </li>
+            </ul>
+        </div>
+        <div class="aui-footer-list clearfix">
+            <h4>新手指导</h4>
+            <ul>
+                <li><a href="#">退货退款流程</a> </li>
+                <li><a href="#">退货退款流程</a> </li>
+                <li><a href="#">服务中心 </a> </li>
+                <li><a href="#">服务中心</a> </li>
+                <li><a href="#">服务中心</a> </li>
+                <li><a href="#"> 更多特色服务 </a> </li>
+                <li><a href="#"> 更多特色服务 </a> </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<script>
+    $('body').delegate("#del", "click", function  (argument) {
+        var id  = $(this).parent().attr('id');
+        var th = $(this);
+        var obj = {};
+        obj['cid'] = id;
+        $.ajax({
+            url:"{:U('User/delComment')}",
+            type:"GET",
+            data:obj,
+            success:function  (msg) {
+                if (msg == 1) {
+                    th.parent().parent().parent().parent().parent().remove();
+                    alert('删除成功');
+                } else {
+                    alert('删除失败');
+                }
+            }
+        });
+    });
+</script>
+</body>
+</html>

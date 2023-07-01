@@ -1,0 +1,578 @@
+<extend name="Index/index"/>
+
+<block name="css">
+    <link rel="shortcut icon" type="image/x-icon" href="__PUBLIC__/home/icon/favicon.ico">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/home/css/base.css">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/home/css/home.css">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/home/css/car/css/style.css">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/home/css/car/js/jquery.js">
+</block>
+
+<!-- js -->
+<block name='js'>
+    <script type="text/javascript" src="__PUBLIC__/home/js/jquery.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/home/js/index.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/home/js/js-tab.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/home/js/MSClass.js"></script>
+
+</block>
+ 
+<!-- 导航栏 -->
+<block name="nav">
+    <div class="yHeader">
+        <div class="yNavIndex">
+            <div class="pullDown">
+                <h2 class="pullDownTitle">全部商品分类</h2>
+            </div>
+            <ul class="yMenuIndex">
+                <li><a href="" target="_blank">服装城</a></li>
+                <li><a href="" target="_blank">美妆馆</a></li>
+                <li><a href="" target="_blank">美食</a></li>
+                <li><a href="" target="_blank">全球购</a></li>
+                <li><a href="" target="_blank">闪购</a></li>
+                <li><a href="" target="_blank">团购</a></li>
+                <li><a href="" target="_blank">拍卖</a></li>
+                <li><a href="" target="_blank">金融</a></li>
+                <li><a href="" target="_blank">智能</a></li>
+            </ul>
+        </div>
+    </div>
+    
+</block>
+<!-- header End -->
+<block name="content">
+<!-- 商品详情 begin -->
+<section>
+    <div class="pc-details" >
+        <div class="containers">
+            <div class="pc-nav-item">
+            <a class="pc-title" href="#">电脑、办公</a> &gt; 
+            <a href="#">外设产品</a> &gt; 
+            <a href="#">电玩</a>&gt; 
+            <a href="#">爱电玩（IGAME）
+            </a>&gt; <a href="#">任天堂NEW 3DS XL NDSi NDSiLL NEW</a> 
+            </div>
+            <div class="pc-details-l">
+                <div class="pc-product clearfix">
+                    <div class="pc-product-h">
+                        <div class="pc-product-top"><img src="__ROOT__/web/Admin/Upload/Goods/{$gidata[0]['path']}" id="big_img" width="418" height="418"></div>
+                        <div class="pc-product-bop clearfix" id="pro_detail">
+                            <ul>
+                            <?php 
+                                $a = 1;
+                            foreach($gidata as $k => $v) :?>
+                                <?php if($a < 6):?>
+                                <li><a href="javascript:void(0);" <?=$k===0 ? 'class="cur"' : '' ?> simg="__ROOT__/web/Admin/Upload/Goods/{$v['path']}"><img src="__ROOT__/web/Admin/Upload/Goods/{$v['path']}" width="58" height="58"></a> </li>
+                                <?php  endif;?>
+                            <?php $a++; endforeach;  ?>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="pc-product-t">
+                        <div class="pc-name-info">
+                            <h1>{$info['name']}</h1>
+                            <p class="clearfix pc-rate price"><strong id="pri">￥{$defaultData['price']}</strong> </p>
+                            <p>由<a href="#" class="reds">神游官方旗舰店</a> 负责发货，并提供售后服务。</p>
+                        </div>
+                        <div class="pc-dashed clearfix">
+                            <span>累计销量：<em class="reds">{$info['sold']}</em> 件</span><b>|</b><span>累计评价：<em class="reds">3888</em></span>
+                        </div>
+                        <div class="pc-size">
+
+                        <?php foreach($attrData as $k => $v) :?>
+
+                            <?php foreach($v as $kk => $vv) :?>
+                            <div class="pc-telling clearfix">
+                                <div class="pc-version"><?=$kk?></div>
+                                <div class="pc-adults">
+                                    <ul>
+                                <?php foreach($vv as $key => $val) :?>
+
+                                            <li><a href="javascript:void(0);" <?=$key === 0 ? 'class="cur attrv"' : ""?> onclick="cur(this)">{$val}</a> </li>
+                                <?php endforeach;?>
+
+                                    </ul>
+                                </div>
+                            </div>
+                            <?php endforeach;?>
+                        <?php endforeach;?>
+
+                            <div class="pc-telling clearfix">
+                                <div class="pc-version">数量</div>
+                                <div class="pc-adults clearfix">
+                                    <div class="pc-adults-p clearfix fl">
+                                        <input type="text" id="subnum"  placeholder="1" value="1">
+                                        <a href="javascript:void(0);" class="amount1"><img style="width:inherit;height:inherit" src="__PUBLIC__/home/img/pd/jia.jpg" width="58" height="58"></a>
+                                        <a href="javascript:void(0);" class="amount2"><img style="width:inherit;height:inherit" src="__PUBLIC__/home/img/pd/jian.jpg" width="58" height="58"></a>
+                                    </div>
+                                    <div class="fl pc-letter ">件</div>
+                                    <div class="fl pc-stock stock">库存<em id="sto">{$defaultData['stock']}</em>件</div>
+                                </div>
+                            </div>
+                            <div class="pc-number clearfix"><span class="fl">商品编号：{$info['id']}   </span> </div>
+                        </div>
+                        <div class="pc-emption">
+                            <input hidden id="did" value="" />
+                            <a href="javascript:void(0)" class="join shopcar">加入购物车</a>
+                            <a href="javascript:void(0)" class="collect"><?=empty($collect)? '收藏' : '取消收藏'; ?></a>
+                        </div>
+                    </div>
+<!-- ajax加入购物车 -->
+
+                            <script>
+                                $('.shopcar').click(function(){
+                                    var num = $('#subnum').val();
+                                    var id = $('#did').val();
+                                    $.ajax({
+
+                                        type: 'get',
+                                        url: "{:U('ShopCar/addToCar')}",
+                                        data: 'num='+ num + '&did=' + id,
+                                        success: function(res) {
+                                            if(res['status'] == 1) {
+                                                alert(res['msg']);
+                                            } else {
+                                                alert(res['msg']);
+                                            }
+                                        }
+                                    });
+
+                                });
+
+                            </script>
+
+
+
+
+
+<!-- ajax加入收藏 -->
+
+                            <script>
+                            $('.collect').click(function(){
+                                $.ajax({
+                                    type: 'get',
+                                    url: "{:U('Goods/ajaxCollect')}",
+                                    data: 'gid=' + "{$info['id']}",
+                                    success: function (res) {
+
+                                        if(res['status'] == 1) {
+                                            $('.collect').html('取消收藏');
+                                        } else{
+                                            $('.collect').html('收藏');
+                                        }
+                                        alert(res['msg']);
+                                    }
+
+                                });
+                            });
+
+                            </script>
+
+
+<!-- AJAX判断库存 -->
+
+                            <script>
+
+                                $('.shopcar').click(function(){
+                                    //选择的商品数量
+                                    var a = $('#subnum').val();
+                                    //获取属性拼接后的值
+                                    var attr = $('.pc-version').eq(0).html() + ':' + $('.attrv').eq(0).html()+ ',' + $('.pc-version').eq(1).html() + ':' + $('.attrv').eq(1).html();
+
+                                    $.ajax({
+
+                                        type: 'post',
+                                        url: "{:U('Goods/ajaxConfirmNum')}",
+                                        data: 'gid=' + "{$info['id']}" + '&num=' + a + '&attr=' + attr,
+                                        success: function (res) {
+                                            if(res['status'] == 1) {
+                                                console.log(res);
+                                            } else {
+                                                alert(res['msg']);
+                                            } 
+                                        } 
+                                    });
+
+                                });
+                            </script>
+
+
+
+<!-- AJAX加载属性对应的库存和价格 -->
+                            <script>
+
+                                var cur = function(obj){
+                                    $(obj).parent().siblings().children().removeClass('cur attrv');
+                                    $(obj).addClass("cur attrv");
+                                    //获取属性拼接后的值
+                                    var attr = $('.pc-version').eq(0).html() + ':' + $('.attrv').eq(0).html()+ ',' + $('.pc-version').eq(1).html() + ':' + $('.attrv').eq(1).html();
+                                    
+                                    $.ajax({
+                                        type:"POST",
+                                        url:"{:U('Goods/ajaxPrice')}",
+                                        data: "attr=" + attr + "&gid=" + "{$info['id']}",
+                                        success: function(res){
+                                            console.log(res);
+                                            if(res['info']) {
+                                                $('#pri').html('￥' + res['info']['price']);
+                                                $('#sto').html(res['info']['stock']);
+                                                $('#did').val(res['info']['id']);
+                                            } else {
+                                                $('#sto').html(0);
+                                            }
+                                        }
+                                    });
+
+                                }
+
+
+                                // $(".attrdiv2 a").click(function(){
+                                //     $(".attrdiv2 a").removeClass("cur");
+                                //     $(this).addClass("cur");
+                                // });                  
+                            </script>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="containers clearfix" style="margin-top:20px;">
+        <div class="fl">
+            <div class="pc-menu-in">
+                <h2>店内搜索</h2>
+                <form>
+                    <p>关键词:<input type="text" class="pc-input1"></p>
+                    <p>价  格：<input class="pc-input2"> 到 <input class="pc-input2"></p>
+                    <p><a href="#">搜索</a> </p>
+                </form>
+            </div>
+            <div class="menu_list" id="firstpane">
+                <h2>店内分类</h2>
+                <h3 class="menu_head current">电玩</h3>
+                <div class="menu_body" style="display: none;">
+                    <a href="#">耳机耳麦</a>
+                    <a href="#">游戏机</a>
+                </div>
+                <h3 class="menu_head">手机</h3>
+                <div class="menu_body" style="display: none;">
+                    <a href="#">手机</a>
+                    <a href="#">手机</a>
+                    <a href="#">手机</a>
+                </div>
+
+                <h3 class="menu_head">耳机耳麦</h3>
+                <div class="menu_body" style="display: none;">
+                    <a href="#">耳机耳麦</a>
+                    <a href="#">耳机耳麦</a>
+                    <a href="#">耳机耳麦</a>
+                    <a href="#">耳机耳麦</a>
+                </div>
+            </div>
+        </div>
+
+<!-- 点击选项卡加载数据 -->
+        <script>
+            var a = 1;
+            var sign = false;
+            function control() {
+
+                if(a == 1){
+
+                    $.ajax({
+                        type: 'get',
+                        url: "{:U('Goods/goodsDetail')}",
+                        data: "id={:$info['id']}&flag=2",
+                        success: function(res) {
+                            // alert(res);
+                            var comments = '';
+                            $('.pc-overall').css('display','block');
+                            console.log(res);
+                            if(res['data'].length == 0) {
+                                comments += '<li class="clearfix"><div class="column1"><h1>暂无评价~~</h1><div></li>';
+                                $('.comments').append(comments);
+                                a++;
+                            } else {
+                                
+                                // console.log(res);
+                                var btns = res.btns;
+                                var data = res.data;
+
+
+                                $.each(data, function(index,value) {
+                                    comments += '<li class="clearfix"><div class="column1"><p>'+ value.ctext +'</p><p class="column5">2014-11-25 14:32</p></div><div class="column2"><img src="__PUBLIC__/home/icon/star.png"></div><div class="column4"><p><img src="__PUBLIC__/home/icon/user.png"></p><p>'+ value.username +'</p></div></li>'
+
+
+                                });
+                                $('.comments').append(comments);
+                                $('.page').append(btns);
+                                a ++;
+                            }
+                        }
+                    });
+
+                    sign = true;
+                }
+                //上面执行完毕后
+                if(sign) {
+                    // 绑定返回的分页按钮
+                    $('body').delegate('.page div a', 'click', function() {
+                        $.ajax({
+                            type:'get',
+                            url:$(this).attr('href'),
+                            success:function (res) {
+                                var comments = '';
+                                var data = res.data;
+                                var btns = res.btns;
+                                $.each(data, function(index,value) {
+                                    comments += '<li class="clearfix"><div class="column1"><p>'+ value.ctext +'</p><p class="column5">2014-11-25 14:32</p></div><div class="column2"><img src="__PUBLIC__/home/icon/star.png"></div><div class="column4"><p><img src="__PUBLIC__/home/icon/user.png"></p><p>'+ value.username +'</p></div></li>'
+
+
+                                });
+                                $('.comments').empty().append(comments);
+                                $('.page').empty().append(btns);
+                            }
+                        });
+                        return false;
+                    });
+                }
+
+            }
+
+
+
+
+
+        </script>
+            
+        <div class="pc-info fr">
+            <div class="pc-overall">
+                <ul id="H-table1" class="brand-tab H-table1 H-table-shop clearfix ">
+                    <li class="cur"><a href="javascript:void(0);" >商品介绍</a></li>
+                    <li><a href="javascript:void(0);" onclick="control()">商品评价<em class="reds">(91)</em></a></li>
+                    <li><a href="javascript:void(0);">售后保障</a></li>
+                </ul>
+
+
+                <div class="pc-term clearfix " id="clearA">
+                   <div class="H-over1 pc-text-word clearfix">
+                       <ul class="clearfix">
+                           <li>
+                               <p>商品名称：{$info['name']}</p>
+                           </li>
+                           <li>
+                               <p>商品编号：{$info['id']}</p>
+                           </li>
+                           <li>
+                               <p>品牌： {$brand}</p>
+                           </li>
+                           <li>
+                               <p>上架时间：{:date('Y-m-d ',$info['addtime'])}</p>
+                           </li>
+                       </ul>
+
+<!-- 详情图片遍历 -->
+                       <div>
+                            <div><img src="__ROOT__/web/Admin/Upload/Goods/<?=$detailImage['path']?>" width="100%"></div>
+<!--                        <?php foreach( $detailImage as $k => $v) :?>
+                           <div class="detailImage"><img src="__ROOT__/web/Admin/Upload/Goods/<?=$v['path']?>" width="100%"></div>
+                        <?php endforeach;?> -->
+                            <div class="detailImage"></div>
+                       </div>
+<!-- 页面滚动AJAX加载 -->
+                    <script>
+                    $(function(){ 
+                      var winH = $(window).height(); //页面可视区域高度 
+                      var i = 1; //设置当前跳过条数 
+                      var $WINDOW = $(window);
+                      var flag = true;
+                      $(window).scroll(function () { 
+                        clearTimeout(timer);
+                        if($(this).scrollTop() + $(window).height() - 200 >= $(document).height() && $(this).scrollTop() > 100){ 
+                            if(flag) {
+                                flag = false;
+                                $.ajax({
+                                    type:"get",
+                                    url:"{:U('Goods/goodsDetail')}",
+                                    data: "id={:$info['id']}&p=" + i + "&flag=1",
+                                    success: function(res){
+                                        if(res['path']) {
+                                            
+                                            $('.detailImage').before('<div><img src="__ROOT__/web/Admin/Upload/Goods/'+ res['path']+'" width="100%"></div>');
+                                            // 下一次请求的页数
+                                            i = res['page'];
+                                            flag = true;
+                                            
+                                        } else {
+                                            $WINDOW.off();
+                                        }
+                                    }
+                                });
+                            }
+                        } 
+                      }); 
+                    }); 
+
+                    </script>
+                   </div>
+                   <div class="H-over1" style="display:none">
+
+                   </div>
+
+                   <div class="H-over1 pc-text-title" style="display:none">
+                       <p>本产品全国联保，享受三包服务，质保期为：一年质保
+                           如因质量问题或故障，凭厂商维修中心或特约维修点的质量检测证明，享受7日内退货，15日内换货，15日以上在质保期内享受免费保修等三包服务！
+                           (注:如厂家在商品介绍中有售后保障的说明,则此商品按照厂家说明执行售后保障服务。) 您可以查询本品牌在各地售后服务中心的联系方式，请点击这儿查询......</p>
+                       <div class="pc-line"></div>
+                   </div>
+
+                </div>
+            </div>
+            <div class="pc-overall" style="display:none">
+
+                <div class="pc-term clearfix">
+                    <div class="pc-column">
+                        <span class="column1">评价心得</span>
+                        <span class="column2">顾客满意度</span>
+                        <span class="column4">评论者</span>
+                    </div>
+                    <div class="H-over  pc-comments clearfix">
+                        <ul class="clearfix comments">
+                            
+                        </ul>
+                        <div class="clearfix">
+                            <div class="fr pc-search-g pc-search-gs page">
+
+                            </div>
+                        </div>
+                    </div>
+                   
+                </div>
+            </div>
+            <div class="clearfix" style="display:none">
+                <div class="fr pc-search-g pc-search-gs">
+                    <a href="#" class="fl " style="display:none">上一页</a>
+                    <a class="current" href="#">1</a>
+                    <a href="javascript:;">2</a>
+                    <a href="javascript:;">3</a>
+                    <a href="javascript:;">4</a>
+                    <a href="javascript:;">5</a>
+                    <a href="javascript:;">6</a>
+                    <a href="javascript:;">7</a>
+                    <span class="pc-search-di">…</span>
+                    <a href="javascript:;">1088</a>
+                    <a href="javascript:;" class="" title="使用方向键右键也可翻到下一页哦！">下一页</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- 商品详情 End -->
+ <script>
+        $(function(){
+            $(".yScrollListInList1 ul").css({width:$(".yScrollListInList1 ul li").length*(160+84)+"px"});
+            $(".yScrollListInList2 ul").css({width:$(".yScrollListInList2 ul li").length*(160+84)+"px"});
+                var numwidth=(160+84)*4;
+            $(".yScrollListInList .yScrollListbtnl").click(function(){
+                var obj=$(this).parent(".yScrollListInList").find("ul");
+                if (!(obj.is(":animated"))) {
+                    var lefts=parseInt(obj.css("left").slice(0,-4));
+                    if(lefts<60){
+                        obj.animate({left:lefts+numwidth},1000);
+                    }
+                }
+            })
+            $(".yScrollListInList .yScrollListbtnr").click(function(){
+                var obj=$(this).parent(".yScrollListInList").find("ul");
+                var objcds=-(60+(Math.ceil(obj.find("li").length/4)-4)*numwidth);
+                if (!(obj.is(":animated"))) {
+                    var lefts=parseInt(obj.css("left").slice(0,-4));
+                    if(lefts>objcds){
+                        obj.animate({left:lefts-numwidth},1000);
+                    }
+                }
+            })
+     })
+    </script>
+    <script>
+        $(function(){
+            $("#pro_detail a").click(function(){
+                $("#pro_detail a").removeClass("cur");
+                $(this).addClass("cur");
+                $("#big_img").attr("src",$(this).attr("simg"));
+            });
+            
+
+            
+            $('.amount2').click(function(){
+                var num_input = $("#subnum");
+                var buy_num = (num_input.val()-1)>0?(num_input.val()-1):1;
+                num_input.val(buy_num);
+            });
+        
+            $('.amount1').click(function(){
+                var num_input = $("#subnum");
+                var buy_num = Number(num_input.val())+1;
+                num_input.val(buy_num);
+            });
+            
+            $("#H-table li").each(function(i){
+                $(this).click((function(k){
+                    var _index = k;
+                    return function(){
+                        $(this).addClass("cur").siblings().removeClass("cur");
+                        $(".H-over").hide();
+                        $(".H-over:eq(" + _index + ")").show();
+                    }
+                })(i));
+            });
+            $("#H-table1 li").each(function(i){
+                $(this).click((function(k){
+                    var _index = k;
+                    return function(){
+                        $(this).addClass("cur").siblings().removeClass("cur");
+                        $(".H-over1").hide();
+                        $(".H-over1:eq(" + _index + ")").show();
+                    }
+                })(i));
+            });
+        });
+    </script>
+    <script type="text/javascript">
+         (function(a){
+            a.fn.hoverClass=function(b){
+                var a=this;
+                a.each(function(c){
+                    a.eq(c).hover(function(){
+                        $(this).addClass(b)
+                    },function(){
+                        $(this).removeClass(b)
+                    })
+                });
+                return a
+            };
+        })(jQuery);
+
+        $(function(){
+            $("#pc-nav").hoverClass("current");
+        });
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+
+            $("#firstpane .menu_body:eq(0)").show();
+            $("#firstpane h3.menu_head").click(function(){
+                $(this).addClass("current").next("div.menu_body").slideToggle(300).siblings("div.menu_body").slideUp("slow");
+                $(this).siblings().removeClass("current");
+            });
+
+            $("#secondpane .menu_body:eq(0)").show();
+            $("#secondpane h3.menu_head").mouseover(function(){
+                $(this).addClass("current").next("div.menu_body").slideDown(500).siblings("div.menu_body").slideUp("slow");
+                $(this).siblings().removeClass("current");
+            });
+
+        });
+    </script>
+</block>
+

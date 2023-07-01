@@ -1,0 +1,107 @@
+<extend name="Index/index" />
+
+
+        <block name="main">
+        <div class="right_col" role="main">
+          <div class="">
+
+            <div class="clearfix"></div>
+            <div class="row">
+              <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h2>添加角色</h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                      </li>
+                      <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                        <ul class="dropdown-menu" role="menu">
+                          <li><a href="#">Settings 1</a>
+                          </li>
+                          <li><a href="#">Settings 2</a>
+                          </li>
+                        </ul>
+                      </li>
+                      <li><a class="close-link"><i class="fa fa-close"></i></a>
+                      </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+                    <br />
+                    <form method="post" id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
+
+                      <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name"> 角色名 <span class="required">*</span>
+                        </label>
+                        <div class="col-md-3 col-sm-3 col-xs-12" id="uname">
+                          <input type="text" id="username" required="required" class="form-control col-md-7 col-xs-12 has-feedback-left" placeholder="Username" name="name">
+                          <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
+                        </div>
+                      </div>
+
+                      
+                      
+                      <div class="form-group">
+                          <label class="control-label col-md-3 col-sm-3 col-xs-12">拥有权限</label>
+                          <div class="col-md-7 col-sm-7 col-xs-12 method">
+
+                          <foreach name="module" item="v" key="k">
+
+
+                            <div class="checkbox">
+                              <label class="method">
+
+                                  <div style="width:100px;display:inline-block"><label><input name="pri_id[]" type="checkbox" class="flat" value="{$v['id']}" /> {$v['pri_name']}</label></div> |
+
+                                  <foreach name="action" item="vv" key="kk">
+                                    <if condition="$vv['pid'] eq $v['id']">
+
+                                    <div style="width:100px;display:inline-block" ><label><input name="pri_id[]" type="checkbox" class="flat" value="{$vv['id']}" /> 
+                                    {$vv['pri_name']}</label></div>
+
+                                  </if>
+                                  
+                                  </foreach>
+
+
+                              </label>
+                            </div>
+
+
+                          </foreach>
+                          </div>
+
+                      </div>
+
+                      <div class="ln_solid"></div>
+                      <div class="form-group">
+                        <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                          <a href="{:U('Manager/roleList')}" class="btn btn-primary" >返回</a>
+                          <button class="btn btn-primary" type="reset">重置</button>
+                          <button type="submit" class="btn btn-success">提交</button>
+                        </div>
+                      </div>
+
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+        
+
+
+    </block>
+            
+  <block name="script">
+
+  <script>
+    $("#check[cka]").click(function(){
+      alert('1');
+    });
+  </script>
+
+  </block>
+    
+

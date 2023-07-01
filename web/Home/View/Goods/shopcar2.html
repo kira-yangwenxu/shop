@@ -1,0 +1,369 @@
+<extend name="Index/index"/>
+
+<block name="title">
+	<title>购物车</title>
+</block>
+
+<block name="css">
+	<link href="__PUBLIC__/home/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="__PUBLIC__/home/style/css/base.css">
+	<link rel="stylesheet" type="text/css" href="__PUBLIC__/home/style/css/home.css">
+	<link rel="shortcut icon" type="image/x-icon" href="__PUBLIC__/home/icon/favicon.ico">
+	<link rel="stylesheet" type="text/css" href="__PUBLIC__/home/css/base.css">
+	<link rel="stylesheet" type="text/css" href="__PUBLIC__/home/css/home.css">
+</block>
+<block name="js">
+	<script type="text/javascript" src="__PUBLIC__/home/js/jquery.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/home/js/index.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/home/js/js-tab.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/home/js/MSClass.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/home/js/top.js"></script>
+	<script src="__PUBLIC__/home/bootstrap/js/bootstrap.min.js"></script>
+</block>
+
+<block name="find"></block>
+<block name="shopcar"></block>
+<block name="nav"></block>
+
+<block name="content">	
+	<div style="width:1200px;margin-left:10%">
+		<table class="table" id="table">
+			<tr class="th">
+				<th>
+					<input type="checkbox" id="selectAll">全选
+				</th>
+				<th>商品图片</th>
+				<th>商品信息</th>
+				<th>商品参数</th>
+				<th>单价(￥)</th>
+				<th>数量(件)</th>
+				<th>小计(￥)</th>
+			</tr>
+			<empty name="goods_car">
+				<tr class="tip">
+					<td colspan='7' align='center'>
+						<a href="{:U('Index/index')}" style="text-decoration:none"><h2>暂无商品,快去购物吧~~~(^_^)</h2></a>
+					</td>
+				</tr>
+				<else />
+
+				<foreach name="goods_car" item="v">
+					<tr class="tr" did="{$v['did']}">
+						<td>
+							<input type="checkbox" name="box" did="{$v['did']}">
+						</td>
+						<!-- 商品图片 -->
+						<td><img src="__UPLOAD__/Goods/{$v['path']}" style='width:80px'></td>
+						<!-- 商品信息 -->
+						<td>{$v['name']}</td>
+						<!-- 商品参数 -->
+						<td>{$v['attr']}</td>
+						<!-- 单价 -->
+						<td class="price">{$v['price']}</td>
+						<td id="num">
+							<a href="javascript:;">
+								<span class="glyphicon glyphicon-minus minus" did="{$v['did']}"></span>
+							</a>
+							<!-- 数量 -->
+							<input disabled type="text" value="{$v['buynum']}" did="{$v['did']}" style="width:30px;">
+							<a href="javascript:;"class="plus" did="{$v['did']}">
+								<span class="glyphicon glyphicon-plus "></span>
+							</a>
+						</td>
+						<!-- 小计 -->
+						<td class="totle_price" style="font-size:16px;color:red">{$v['totle_price']}</td>
+					</tr>
+				</foreach>
+			</empty>
+			<tr class="totlenp">
+				<td colspan="7">
+					<button class="btn btn-danger" id="selectDel">选中删除</button>
+					<div style="float:right;">
+						<span >共有</span>
+						<em style="font-size:24px;color:red">
+							<empty name="goods_car">0
+								<else/>{$allNum}
+							</empty>
+						</em>
+						件商品，总计(不含运费)
+						<span style="font-size:24px;color:red;margin:0 20px 0 20px">￥
+							<em>
+								<empty name="goods_car">0
+									<else/>{$allTotle}
+								</empty>
+							</em>
+						</span>
+						<a href="javascript:void(0)" class="btn btn-danger btn-lg toPay">去付款</a>
+					</div>
+				</td>
+			</tr>
+		</table>
+
+	</block>
+	<block name="jq">
+		<script>
+		//去付款
+		$('body').delegate('.toPay','click',function  () {
+			var obj = {};
+			//商品个数
+			var goodsNum = $(this).closest('tbody').children();
+			var nums = '';
+			var ids  = '';
+			var prices  = '';
+			//获取每个商品的id和数量
+			for (var i = 1; i < goodsNum.length-1; i++) {
+
+				nums += ','+parseInt(goodsNum.eq(i).find('#num').children('input').attr('value'));
+				ids += ','+parseInt(goodsNum.eq(i).find('#num').children('input').attr('did'));
+			};	
+			//得到各个商品的数量
+			nums = nums.substring(1);
+			//得到所有商品的详情ID
+			ids = ids.substring(1);
+			obj['nums'] = nums;
+			obj['ids'] = ids;
+			$.ajax({
+				type:'get',
+				url:"{:U('ShopCar/toPay')}",
+				data:obj,
+				success:function  (res) {
+					console.log(res);
+					if(res)
+					{
+						$(location).attr('href', "{:U('Orders/index')}");
+					}
+				}
+			})
+
+		})
+			
+		
+			
+		
+		//全选
+		$('#selectAll').click(function  () {
+			$(this).closest('table').find('tr td input[type="checkbox"]').prop('checked',$(this).prop('checked'));
+		})
+
+		//选中删除
+		$('#selectDel').click(function  () {
+			var obj = {};
+			var p =$(this);
+			var ids = '';
+			//找到td父级tr
+			var tr = $(this).closest('.tr');
+			$("input[name='box']:checked").each(function  () {
+				//获取要删除的详情ID
+				ids += ','+$(this).attr('did');
+			})
+			var tr = $(this).closest('table').children().children();
+
+			//处理后的详情ids
+			ids = ids.substring(1);
+			if(ids.length == 0)
+			{
+				alert('请选择要删除的商品');
+				return false;	
+			}
+			//返回数组对象
+			obj['ids'] = ids;
+			obj['action'] = 'more';
+			console.log(obj);
+			$.ajax({
+				url:"{:U('ShopCar/selectDel')}",
+				data:obj,
+				success:function(res) {
+			console.log(res);
+
+					if(res)
+					{
+						//删除选中的商品
+						$("input[name='box']:checked").closest('tr').remove();
+						var goodsLen = $("input[name='box']").length;
+						//购物车的没有商品
+						if(goodsLen <= 0)
+						{
+							$('.th').after('<tr class="tip"><td colspan="7" align="center"><a href="/shop/Home/Index/index.html" style="text-decoration:none"><h2>暂无商品,快去购物吧~~~(^_^)</h2></a></td></tr>');
+						}
+						/*
+							修改总数量
+							*/
+						//找到总数量
+						var totleNum = tr.last().children().children().children('em').eq(0);
+						//商品的个数
+						var goodsNum = tr.parent().children();
+						//初始化总数量
+						var nums = 0;
+						for (var i = 1; i < goodsNum.length-1; i++) {
+							//累加数量
+							nums += parseInt(goodsNum.eq(i).children().eq(5).children('input').attr('value'));
+						};
+						if(!nums)
+						{
+							nums = 0;
+						}
+						//修改总数量
+						totleNum.html(nums);
+
+						/*
+							修改总价
+							*/
+						//获取每个商品的小计
+						var totles = 0;
+						for (var i = 1; i < goodsNum.length-1; i++) {
+							//累加小计
+							totles += parseFloat(goodsNum.eq(i).children().eq(6).html());
+						};
+						totles = parseFloat(totles);
+						if(!totles)
+						{
+							totles = 0;
+						}
+						//修改总价
+						tr.parent().children().last().children().children().children('span').eq(1).children('em').html(totles);
+					}
+
+				}
+			})
+		})
+
+		//增加数量
+		$('body').delegate('.plus','click',function () {
+			var p = $(this);
+			/*
+				修改商品数量
+				*/
+			//商品数量
+			var num = parseInt($(this).prev().attr('value'));
+			//加1后的商品数量
+			num++; 	
+			//修改商品数量
+			$(this).prev().attr('value',num);
+
+			/*
+				修改小计
+				*/
+			//找到td父级tr
+			var tr = $(this).closest('.tr');
+			//单价
+			var price = tr.children().eq(4).html();
+			//计算小计
+			var prices = parseFloat(price)*parseInt(num);
+
+			//修改小计
+			tr.children().eq(6).html(prices);
+
+			/*
+				修改总数量
+				*/
+			//找到总数量
+			var totleNum = $(this).closest('.table').children().children().last().children().children().children('em').eq(0);
+
+			//商品的个数
+			var goodsNum = tr.parent().children();
+			//初始化总数量
+			var nums = 0;
+			for (var i = 1; i < goodsNum.length-1; i++) {
+				//累加数量
+				nums += parseInt(goodsNum.eq(i).children().eq(5).children('input').attr('value'));
+			};
+			//修改总数量
+			totleNum.html(nums);
+
+			/*
+				修改总价
+				*/
+			//获取每个商品的小计
+			var totles = 0;
+			for (var i = 1; i < goodsNum.length-1; i++) {
+				//累加小计
+				totles += parseFloat(goodsNum.eq(i).children().eq(6).html());
+			};
+			totles = parseFloat(totles);
+			//修改总价
+			tr.parent().children().last().children().children().children('span').eq(1).children('em').html(totles);
+
+			/*
+				ajax请求
+				*/
+				var obj = {};
+			//获取商品的详情ID
+			var did = $(this).attr('did');
+			//获取商品数量
+			obj['stock'] = num;
+			obj['action'] = 'plus';
+			obj['id'] = did;	
+			$.ajax({
+				url:"{:U('ShopCar/shopCarList')}",
+				data:obj,
+				success:function  (res) {
+					if(obj.stock >= res.stock)
+					{
+						//库存最大
+						p.prev().attr('value',res.stock);
+						p.attr('disabled',true)
+					}
+				}
+			})
+		})
+
+		//减少数量
+		$('body').delegate('.minus','click',function () {
+			/*
+				修改商品数量
+				*/
+			//商品数量
+			var num = parseInt($(this).parent().next().attr('value'));
+			//加1后的商品数量
+			num--; 	
+			if(num <= 0)
+			{
+				num = 1;
+			}
+			//修改商品数量
+			$(this).parent().next().attr('value',num);
+
+			/*
+				修改小计
+				*/
+			// 找到td父级tr	
+			var tr = $(this).closest('.tr');
+			//单价
+			var price = tr.children().eq(4).html();
+			//计算小计
+			var prices = parseFloat(price)*parseInt(num);
+
+			//修改小计
+			tr.children().eq(6).html(prices);
+
+			/*
+				修改总数量
+				*/
+			//找到总数量
+			var totleNum = $(this).closest('.table').children().children().last().children().children().children('em').eq(0);
+			//商品的个数
+			var goodsNum = tr.parent().children();
+			//初始化总数量
+			var nums = 0;
+			for (var i = 1; i < goodsNum.length-1; i++) {
+				//累加数量
+				nums += parseInt(goodsNum.eq(i).children().eq(5).children('input').attr('value'));
+			};
+			//修改总数量
+			totleNum.html(nums);
+
+			/*
+				修改总价
+				*/
+			//获取每个商品的小计
+			var totles = 0;
+			for (var i = 1; i < goodsNum.length-1; i++) {
+				//累加小计
+				totles += parseFloat(goodsNum.eq(i).children().eq(6).html());
+			};
+			totles = parseFloat(totles);
+			//修改总价
+			tr.parent().children().last().children().children().children('span').eq(1).children('em').html(totles);
+		})
+	</script>
+</block>

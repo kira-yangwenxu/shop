@@ -1,0 +1,234 @@
+<extend  name="Index/index"/>
+<block name="title">
+	<title>提交订单</title>
+</block>
+<block name="css">
+  <link rel="shortcut icon" type="image/x-icon" href="__PUBLIC__/home/icon/favicon.ico">
+	<link rel="stylesheet" type="text/css" href="__PUBLIC__/home/css/base.css">
+	<link rel="stylesheet" type="text/css" href="__PUBLIC__/home/css/home.css">
+</block>
+<block name="js">
+	<script type="text/javascript" src="__PUBLIC__/home/js/jquery.js"></script>
+ </head>
+ <body>
+</block>
+<block name="shopcar"></block>
+<block name="find"></block>
+<block name="logo"></block>
+<block name="nav">
+
+
+
+  
+<!--- header begin-->
+<header id="pc-header">
+    <div class="container clearfix">
+        <div class="header-logo fl" style="width:212px;"><h1><a href="#"><img src="__PUBLIC__/home/icon/logo.png"></a></h1></div>
+        <div class="pc-order-titlei fl"><h2>填写订单</h2></div>
+        <div class="pc-step-title fl">
+            <ul>
+                <li class="cur2"><a href="#">1 . 我的购物车</a></li>
+                <li class="cur"><a href="#">2 . 填写核对订单</a></li>
+                <li><a href="#">3 . 成功提交订单</a></li>
+            </ul>
+        </div>
+    </div>
+
+</header>
+</block>
+<!-- header End -->
+
+<block name="content">
+
+<!-- 订单提交成功 begin-->
+<section>
+    <div class="containers">
+       <div class="pc-space">
+           <div class="pc-order-title clearfix"><h3 class="fl">收货人信息</h3> <a href="javascript:void(0);"  class="fr pc-order-add btn1" onclick="a()">新增收货地址</a><a href="javascript:void(0);"  onclick="b()" class=" fr none">收起</a> </div>
+           <div>
+             <form id="address" method="post" action="{:U('Orders/doAddAddress')}">
+                    <input name="id" value="<?= $_SESSION['homeInfo']['id']?>" type="hidden">
+                      <div class="member-pages clearfix">
+                        <ul>
+                          <li class="clearfix">
+                            <div class="user-info1 fl clearfix" id="b" style="display:none">
+                                      <span class="info1">省份:　</span>
+                                       <select name="provinces" id="provinces"  style="width:150px;">
+                                           <option value="0">--请选择--</option>
+                                           <foreach name="list" item="v" key="k">
+                                              <option class="level1" value="{$v['id']}">{$v['area_name']}</option>
+                                           </foreach>
+                                       </select>
+                                        <span class="info1">市:</span>
+                                        <select name="city" id="city" style="width:150px;">
+                                            <option value="">--请选择--</option>
+                                        </select>
+                                        <span class="info1">区/县：</span>
+                                        <select name="area" id="area" style="width:150px;">
+                                           <option value="">--请选择--</option>
+                                        </select>
+                                        <span class="info1">详细地址：</span>
+                                        <input type="text" style="width:300px" name="detail" id="">
+                                        <span class="info1">收件人：</span>
+                                        <input type="text" name="name" id="">
+                                    <div class="user-info">
+                                        <span class="info1">手机:</span>
+                                        <input min="0" type="number" name="phone" id="">
+                                    </div>
+                                        <button class="" type="sumbit">提交</button>                  
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </form>
+           </div>
+           <div class="pc-border">
+               <div class="pc-order-text clearfix">
+                 <form action="{:U('OrdersSuccess/index')}" method="post">                
+                     <ul class=" clearfix">
+                        <foreach name="data" item="v">
+                           <li class="clearfix fl">
+                              <if condition="($v['status'] == 1)">
+                                 <div class="fl pc-frame pc-frams"> 默认地址</div>
+                                 <div class="fl pc-address"><input type="radio" name="address" checked value="{$v['provinces']}{$v['city']}{$v['area']}{$v['detail']}"><span>{$v[user]}</span> <span>{$v[phone]}</span> <span>{$v['provinces']}{$v['city']}{$v['area']}{$v['detail']}</span></div>
+                               <else />
+                                 <div class="fl pc-frame pc-frams"> 地址</div>
+                                 <div class="fl pc-address"><input type="radio" name="address"  value="{$v['provinces']}{$v['city']}{$v['area']}{$v['detail']}"><span>{$v[user]}</span> <span>{$v[phone]}</span> <span>{$v['provinces']}{$v['city']}{$v['area']}{$v['detail']}</span></div>
+                                 <input type="hidden" name="phone" value="{$v[phone]}">
+                                 <input type="hidden" name="consignee" value="{$v[user]}" >
+                               </if>
+                           </li>
+                        </foreach>
+                     </ul>
+               </div>
+           </div>
+       </div>
+       <div class="pc-space">
+            <div class="pc-order-title clearfix"><h3 class="fl">支付方式</h3></div>
+            <div class="pc-border">
+                <div class="pc-order-text clearfix">
+                    <ul class=" clearfix">
+                        <li class="clearfix fl">
+                            <div class="fl pc-frame pc-frams"> <a href="#"> 在线支付</a></div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+       <div class="pc-space clearfix">
+           <div class="fl ">
+               <div class="pc-order-title clearfix"><h3 class="fl">备注</h3></div>
+               <div class="fr pc-border">
+                   <div class="pc-order-text pc-order-l clearfix">
+                       <ul id="H-table" class="clearfix H-table"  >
+                       <textarea  name="message" value="" style="width:400px;height=400px;resize:none;" ></textarea>       
+                       </ul>
+                   </div>
+               </div>
+           </div>
+           <div class="fr ">
+               <div class="pc-order-title clearfix"><h3 class="fl">商品信息</h3></div>
+               <div class="pc-border">
+                   <div class="pc-order-text clearfix">
+                    <foreach name="goodslist" item="v" key="k"> 
+                      <if condition="$v neq null">
+                       <div class="clearfix pc-wares-p">
+                           <div class="fl pc-wares"><a href="{:U('goods/goodsDetail',['id'=>$v['did']])}"><img src="/shop/web/Admin/Upload/Goods/{$v['path']}" width="70px"></a></div>
+                           <div class="fl pc-wares-w"> <a href="#">{$v['name']}</a> <p class="clearfix"><span class="fl">规格：{$v['attr']}</span></p></div>
+                           <?php $buynum += $v['buynum'] ?>
+                           <div class="fl pc-wares-s"><span class="reds">￥{$v['price']}</span><span>x{$v['buynum']}</span></div>
+                           <?php $total += $v['price'] * $v['buynum']?>
+
+                       </div>
+                      </if>
+                    </foreach>                  
+                   </div>
+               </div>
+           </div>
+       </div>
+       <div class="clearfix">
+           <div class="fr pc-list-t">
+               <ul>
+                   <li><span><b>{$buynum}</b> 件商品，总商品金额：</span> <em>￥{$total}</em></li>
+                   <li><span>应付总额：</span> <em>￥{$total}</em></li>
+               </ul>
+           </div>
+       </div>
+       <div class="pc-space-n"></div>
+       <div class="clearfix">
+           <div class="fr pc-space-j">
+               <spna>应付总额：<strong>￥{$total}</strong></spna>
+               <button class="pc-submit">提交订单</button>
+           </div>
+       </div>
+    </form>
+
+</section>
+<!-- 订单提交成功 End-->
+</block>
+
+<block name="jq">
+  
+<script>
+
+
+function a() {
+  $('#b').attr('style','display:block');
+
+  // 二级联动
+
+}
+$('#provinces').change(function() { 
+          //获取tid的value
+          var level1id = $(this).children('option:selected').attr('value');
+          $.ajax({ 
+            url:"{:U('Orders/level2Address')}",
+            data:'pid='+level1id,
+            success:function (data) {
+              $('#city').empty();
+              var count = data.length;
+              var b="";
+              for (var i = 0; i <count; i++) {  
+              // console.log(data[i].id);
+                b += "<option value='"+data[i].id+"'>"+data[i].area_name+"</option>";  
+              }
+              $("#city").append(b);  
+            },
+            error:function  () {
+               console.log('wrong');
+            }
+          });
+        });
+$('#city').change(function() { 
+          //获取tid的value
+          var level2id = $(this).children('option:selected').attr('value');
+          $.ajax({ 
+            url:"{:U('Orders/level3Address')}",
+            data:'cid='+level2id,
+            success:function (data) {
+              $('#area').empty();
+              var count = data.length;
+              var b="";
+              for (var i = 0; i <count; i++) {
+              // console.log(data[i].id);
+                b += "<option value='"+data[i].id+"'>"+data[i].area_name+"</option>";  
+              }
+              $("#area").append(b);  
+            },
+            error:function  () {
+               console.log('wrong');
+            }
+          });
+        });
+function b() {
+  $('#b').attr('style','display:none');
+
+}
+
+</script>
+
+
+</block>
+
+
+
